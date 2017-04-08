@@ -57,11 +57,13 @@
   username = "";
   howmany = 0;
   nickarray = [];
+	
   // Connection opened
   socket.addEventListener('open', function (event) 
   {
     //socket.send('A user has Connected');
   });
+	
   // Listen for messages
   socket.addEventListener('message', function (event) 
   {
@@ -87,7 +89,15 @@
 	}
 	
   });
+	
+  //send message on click
+  send.addEventListener("click", () => {
+    sendthemessage();
+	msg.value = "";
+  });
   
+	
+//-------------------------------other functions here--------------------------------------
 
 //send message when enter is pressed
 document.getElementById("msg").addEventListener("keydown", function(e) {
@@ -161,10 +171,4 @@ function addmessage(){
 	ul.appendChild(li)
 }
 
-  //send message on click
-  send.addEventListener("click", () => {
-    sendthemessage();
-	msg.value = "";
-  });
-  
 </script>
