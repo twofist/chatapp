@@ -46,42 +46,34 @@
 		</ul>
 	</div>
 	<input type="text" id="msg" style="width: 190px;" />
-	<button id="send" onClick="usernamecheck()">Send</button>
+	<button id="send" onClick="sendthemessage()">Send</button>
 	<input id="scroll" type="checkbox" /> scroll to bottom upon new message
 </div>
 
 <script>
 
-  // Create WebSocket connection.
   const socket = new WebSocket('ws://localhost:8080');
   username = "";
   howmany = 0;
   nickarray = [];
-	
-  // Connection opened
-  socket.addEventListener('open', function (event) 
-  {
-    //socket.send('A user has Connected');
-  });
-	
-  // Listen for messages
+
+  socket.addEventListener('open', function (event) {/*nothing*/ });
+  socket.addEventListener('close', function(event) {/*do something*/});
+  socket.addEventListener('error', function(event) {/*do something*/});
+  
   socket.addEventListener('message', function (event) 
   {
-    console.log('Message from server', event.data);
 	if(event.data === "A user has Connected")
 	{	
 		return;
 	}
 	
-	//add username
-	str = event.data
+	str = event.data;
 	addusername();
 	
-	//add new message to the chatbox
 	messagetosend = event.data;
 	addmessage();
 	
-	//scroll if scroll is checked and not at bottom
 	const chat = document.getElementById("chatzone");
 	const scroll = document.getElementById("scroll");
 	if (scroll.checked === true && chat.scrollTop !== chat.scrollHeight) {
@@ -89,69 +81,66 @@
 	}
 	
   });
-	
-  //send message on click
+ 
   send.addEventListener("click", () => {
-    sendthemessage();
-	msg.value = "";
+		sendthemessage();
   });
-  
-	
-//-------------------------------other functions here--------------------------------------
 
-//send message when enter is pressed
 document.getElementById("msg").addEventListener("keydown", function(e) {
 if (e.keyCode == 13) 
 	{ 
-		usernamecheck();
-		if (/\S/.test(username) === true) {
-			sendthemessage();
-		}
-		msg.value = "";
+		sendthemessage();
 	}
 }, false);
 
 function usernamecheck(){
-	if (/\S/.test(username) === false) {
 		const getname = prompt("Please enter your name", "");
 		username = getname;
-	}
 }
 
 function sendthemessage(){
-	if(/\S/.test(msg.value) === true)
+	if(/\S/.test(username) === true && /\S/.test(msg.value) === true)
 	{
 		const txt = msg.value;
 		socket.send(username + ": " + txt);
 		
-		//add username
 		str = username;
 		addusername();
 		
-		//add new message to the chatbox
 		messagetosend = username + ": " + txt;
 		addmessage();
 		
-		//scroll if scroll is checked and not at bottom
 		const chat = document.getElementById("chatzone");
 		const scroll = document.getElementById("scroll");
 		if (scroll.checked === true && chat.scrollTop !== chat.scrollHeight) {
 			chat.scrollTop = chat.scrollHeight;
 		}
+		msg.value = "";
+	}else if(/\S/.test(username) === false){
+		usernamecheck();
 	}
 };
  
 function addusername(){
-	if(typeof userarray !== 'undefined' && userarray.length >= 1){
-		userarray.push(str.split(": ",1));
-		howmany += 1;
-		nickname = userarray[howmany];
-	}else{
-		userarray = str.split(": ",1);
-		nickname = userarray[0];
-	}
-	
-	if(!nickarray.includes(nickname)){
+		if(typeof userarray !== 'undefined' && userarray.length >= 1){
+			userarray.push(str.split(": ",1));
+			howmany = howmany + 1;
+			nickname = userarray[howmany];
+		}else{
+			userarray = str.split(": ",1);
+			nickname = userarray[0];
+		}
+
+		for (i = 0; i < nickarray.length; i++){
+				console.log("nickarray: "+nickarray)
+				console.log("nickarray[i]: "+nickarray[i])
+				console.log("nickname: "+ nickname)
+				console.log("--------" + i + "--------");
+			if(nickarray[i] == nickname){
+				return;
+			}
+		}
+		
 		const ul2 = document.getElementById("username");		
 		const li2 = document.createElement("li");
 		const children2 = ul2.children.length + 1
@@ -159,7 +148,6 @@ function addusername(){
 		li2.appendChild(document.createTextNode(nickname));
 		ul2.appendChild(li2)			
 		nickarray.push(nickname);
-	}
 }
 
 function addmessage(){
@@ -170,5 +158,4 @@ function addmessage(){
 	li.appendChild(document.createTextNode(messagetosend));
 	ul.appendChild(li)
 }
-
 </script>
