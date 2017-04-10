@@ -42,7 +42,6 @@
 <div class="chat">
 	<div id="chatzone" name="chatzone">
 		<ul id="chatmessage">
-			<li id="element1">connected... go ahead and type with other people!</li>
 		</ul>
 	</div>
 	<input type="text" id="msg" style="width: 190px;" />
@@ -57,9 +56,20 @@
   howmany = 0;
   nickarray = [];
 
-  socket.addEventListener('open', function (event) {/*nothing*/ });
-  socket.addEventListener('close', function(event) {/*do something*/});
-  socket.addEventListener('error', function(event) {/*do something*/});
+  socket.addEventListener('open', function (event) {
+  	messagetosend = "connected... go ahead and chat with other people!"
+  	addmessage();
+  });
+
+  socket.addEventListener('close', function(event) {
+ 	 messagetosend = "disconnected..."
+ 	 addmessage();
+  });
+
+  socket.addEventListener('error', function(event) {
+  	messagetosend = "an error has occured!"
+  	addmessage();
+  });
   
   socket.addEventListener('message', function (event) 
   {
