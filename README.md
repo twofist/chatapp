@@ -1,5 +1,4 @@
 # chatbox
-simple chatbox
+Simple chatbox
 
-
-you can try it at http://twofist.info
+You can try it online at http://twofist.info
