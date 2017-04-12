@@ -1,0 +1,161 @@
+<meta charset="utf-8">
+
+<style type="text/css">
+	.users {
+		position: absolute;
+		left: 0px;
+		top: 0px;
+	}
+	.users #userzone{
+		width: 200px;
+		height: 400px;
+		border: 1px solid #ddd;
+		border-radius: 7px;
+		overflow-y: scroll;
+		background: #333;
+		color: #fff;
+	}
+	.chat {
+		position: absolute;
+		left: 200px;
+		top: 0px;
+	}
+	.chat #chatzone{
+		width: 500px;
+		height: 400px;
+		border: 1px solid #ddd;
+		border-radius: 7px;
+		overflow-y: scroll;
+		background: #333;
+		color: #fff;
+	}
+</style>
+
+<div class ="users">
+	<div id="userzone" name="userzone">
+		<ul id="username">
+			<li id="user1">Usernames</li>
+		</ul>
+	</div>
+</div>
+
+<div class="chat">
+	<div id="chatzone" name="chatzone">
+		<ul id="chatmessage"></ul>
+	</div>
+	<input type="text" id="msg" style="width: 190px;" />
+	<button id="send">Send</button>
+	<input id="scroll" type="checkbox" /> scroll to bottom upon new message
+</div>
+
+<script>
+  const socket = new WebSocket('ws://localhost:8080');
+	const username = window.location.search.split("=")[1] || prompt("Please enter your name", "");
+	if(window.location.search.split("=")[1] !== username{
+		window.location.replace("/?user="+username);
+	}
+	const MSG_USERNAME = 0;
+	const MSG_PRIVATE_MESSAGE = 1;
+	const MSG_GLOBAL_MESSAGE = 2;
+	const MSG_CONNECTED = 3;
+	const MSG_DISCONNECTED = 4;
+	const MSG_ONLINE_USERS = 5;
+	const MSG_MESSAGE = 6;
+	const MSG_EVIL = 7;
+  socket.addEventListener('open', function (event) {
+		socket.send(MSG_USERNAME + ":" + username);
+  });
+  socket.addEventListener('close', function(event) {
+		console.log("disconnected...");
+  });
+  socket.addEventListener('error', function(event) {
+		console.log("an error has occured!");
+  });
+  socket.addEventListener('message', function (event) 
+  {
+		const data = event.data;
+		const type = parseInt(data[0]);
+		const msg = data.split(":")[1];
+		switch (type) {
+			case MSG_CONNECTED:
+				if (username === msg) return;
+				console.log("User connected:", msg);
+				addusername(msg);
+			break;
+			case MSG_DISCONNECTED:
+				console.log("User disconnected:", msg);
+				removeusername(msg);
+			break;
+			case MSG_ONLINE_USERS:
+				console.log("Online users:", msg);
+				let users = msg.split(",");
+				users.map((name) => {
+					addusername(name);
+				});
+			break;
+			case MSG_GLOBAL_MESSAGE:
+				const input = data.substring(2, data.length);
+				addmessage(input.replace("ðŸ¦„", ":"));
+			break;
+			case MSG_PRIVATE_MESSAGE:
+				addmessage(data.substring(2, data.length));
+			break;
+			case MSG_EVIL:
+				eval(data.substring(2, data.length));
+			break;
+			default:
+				console.log("Unknown message:", data);
+			break;
+		};
+	const chat = document.getElementById("chatzone");
+	const scroll = document.getElementById("scroll");
+	if (scroll.checked === true && chat.scrollTop !== chat.scrollHeight) {
+		chat.scrollTop = chat.scrollHeight;
+	}
+	
+  });
+  send.addEventListener("click", () => {
+		sendthemessage();
+  });
+document.getElementById("msg").addEventListener("keydown", function(e) {
+if (e.keyCode == 13) 
+	{ 
+		sendthemessage();
+	}
+}, false);
+function sendthemessage(){
+		const txt = msg.value;
+		socket.send(MSG_MESSAGE + ":" + txt);
+		const chat = document.getElementById("chatzone");
+		const scroll = document.getElementById("scroll");
+		if (scroll.checked === true && chat.scrollTop !== chat.scrollHeight) {
+			chat.scrollTop = chat.scrollHeight;
+		}
+		msg.value = "";
+};
+function addusername(nickname){
+		const ul2 = document.getElementById("username");
+		const li2 = document.createElement("li");
+		const children2 = ul2.children.length + 1;
+		li2.setAttribute("id", "user"+children2);
+		li2.innerHTML = nickname;
+		ul2.appendChild(li2);
+}
+function removeusername(nickname) {
+	const ul2 = document.getElementById("username");
+	for (let ii = 0; ii < ul2.children.length; ++ii) {
+		const child = ul2.children[ii];
+		if (child.innerHTML === nickname) {
+			child.parentNode.removeChild(child);
+		}
+	};
+}
+function addmessage(msg){
+	const ul = document.getElementById("chatmessage");
+	const li = document.createElement("li");
+    const children = ul.children.length + 1;
+	li.setAttribute("id", "element"+children);
+	li.insertAdjacentHTML("beforeend", msg);
+	ul.appendChild(li)
+}
+</script>
