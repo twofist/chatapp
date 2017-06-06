@@ -1,7 +1,7 @@
 # chatbox
 Simple chatbox
 
-You can try it online at http://twofist.info
+You can try it online at http://twofist.info (currently server not setup so it doesn't work)
 
 send / receive messages  
 every user has a random color  
