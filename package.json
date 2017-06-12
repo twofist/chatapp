@@ -20,7 +20,6 @@
     "url": "git+https://github.com/twofist/chatbox.git"
   },
   "keywords": [
-    "heroku",
     "chatbox"
   ],
   "author": "twofist",
