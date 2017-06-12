@@ -1,0 +1,32 @@
+{
+  "name": "chatserver",
+  "version": "1.0.0",
+  "description": "no description",
+  "main": "server.js",
+  "engines": {
+    "node": "6.10.3",
+    "npm": "3.10.10"
+  },
+  "dependencies": {
+    "ws": "^3.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js --port 27689"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/twofist/chatbox.git"
+  },
+  "keywords": [
+    "heroku",
+    "chatbox"
+  ],
+  "author": "twofist",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/twofist/chatbox/issues"
+  },
+  "homepage": "https://github.com/twofist/chatbox#readme"
+}
