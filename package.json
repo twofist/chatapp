@@ -23,7 +23,7 @@
     "heroku",
     "chatbox"
   ],
-  "author": "twofist", "maierfelix"
+  "author": "twofist", "maierfelix",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/twofist/chatbox/issues"
