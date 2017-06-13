@@ -1,5 +1,6 @@
 const WebSocket = require('ws');
-const wss = new WebSocket.Server({ port: 8080 });
+const PORT = process.env.PORT || 27689;
+const wss = new WebSocket.Server({ port: PORT });
 const MSG_USERNAME = 0;
 const MSG_PRIVATE_MESSAGE = 1;
 const MSG_GLOBAL_MESSAGE = 2;
@@ -8,13 +9,18 @@ const MSG_DISCONNECTED = 4;
 const MSG_ONLINE_USERS = 5;
 const MSG_MESSAGE = 6;
 const MSG_EVIL = 7;
+
 let uid = 0;
+
+console.log("Listening on", PORT);
+
 const getRandomRgbColor = () => {
   const r = (Math.random() * 256) | 0;
   const g = (Math.random() * 256) | 0;
   const b = (Math.random() * 256) | 0;
   return (`rgb(${r},${g},${b})`);
 };
+
 class User {
   constructor(obj) {
     this.id = uid++;
@@ -36,7 +42,9 @@ class User {
     return (this.username !== "");
   }
 };
+
 let users = [];
+
 let userAlreadyConnected = (user) => {
   for (let ii = 0; ii < users.length; ++ii) {
     const us = users[ii];
@@ -44,6 +52,7 @@ let userAlreadyConnected = (user) => {
   };
   return (false);
 };
+
 let deleteUserFromUsers = (user) => {
   users.map((us, index) => {
     if (us.username === user.username || us.id === user.id) {
@@ -51,6 +60,7 @@ let deleteUserFromUsers = (user) => {
     }
   });
 };
+
 let getOnlineUsers = () => {
   let str = "";
   users.map((user, index) => {
@@ -59,11 +69,13 @@ let getOnlineUsers = () => {
   });
   return (str);
 };
+
 let broadcastMessage = (type, msg) => {
   users.map((user) => {
     user.send(type + ":" + msg);
   });
 };
+
 let getUserByUsername = (username) => {
 	for (let ii = 0; ii < users.length; ++ii) {
 		const us = users[ii];
@@ -71,6 +83,7 @@ let getUserByUsername = (username) => {
   };
   return null;
 };
+
 let validUsername = (str) => {
   return(
     str !== "undefined"&&
@@ -78,24 +91,26 @@ let validUsername = (str) => {
     str.length >= 1 && str.length <= 15
   );
 };
+
 wss.on('connection', function connection(ws) {
-	const ip = ws.upgradeReq.connection.remoteAddress;
+	console.log("someone connected");
+	const ip = "roflcopter"; //ws.upgradeReq.connection.remoteAddress;
 	const user = new User({
 	ip: ip,
 	socket: ws
-	});
-if (userAlreadyConnected(user)) {
+	});	
+  /*if (userAlreadyConnected(user)) {
     console.log("Already connected, skipping!");
     return;
-  }
+  }*/
 	users.push(user);
 	console.log(users.length, "connected users!");
 	ws.on('close', () => {
     deleteUserFromUsers(user);
     console.log(user.ip + ":" + user.username, "disconnected!");
     broadcastMessage(MSG_DISCONNECTED, user.username);
-	
   });
+  
   ws.on('message', function (data) {
     const type = parseInt(data[0]);
 	data = data.substring(2, data.length);
@@ -144,6 +159,7 @@ if (userAlreadyConnected(user)) {
 	
   });
 });
+
 process.stdin.resume();
 process.stdin.setEncoding('utf8');
 process.stdin.on('data', function (text) {
