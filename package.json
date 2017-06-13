@@ -20,9 +20,10 @@
     "url": "git+https://github.com/twofist/chatbox.git"
   },
   "keywords": [
+    "heroku",
     "chatbox"
   ],
-  "author": "twofist",
+  "author": "twofist", "maierfelix"
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/twofist/chatbox/issues"
