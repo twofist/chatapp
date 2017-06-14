@@ -51,7 +51,7 @@
 <script>
   const socket = new WebSocket('ws://twofist-chat-server.herokuapp.com');
 	const username = window.location.search.split("=")[1] || prompt("Please enter your name", "");
-	if(window.location.search.split("=")[1] !== username{
+	if(window.location.search.split("=")[1] !== username){
 		window.location.replace("/?user="+username);
 	}
 	const MSG_USERNAME = 0;
