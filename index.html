@@ -49,7 +49,7 @@
 </div>
 
 <script>
-  const socket = new WebSocket('ws://localhost:8080');
+  const socket = new WebSocket('ws://twofist-chat-server.herokuapp.com');
 	const username = window.location.search.split("=")[1] || prompt("Please enter your name", "");
 	if(window.location.search.split("=")[1] !== username{
 		window.location.replace("/?user="+username);
@@ -62,17 +62,20 @@
 	const MSG_ONLINE_USERS = 5;
 	const MSG_MESSAGE = 6;
 	const MSG_EVIL = 7;
+	
   socket.addEventListener('open', function (event) {
 		socket.send(MSG_USERNAME + ":" + username);
   });
+	
   socket.addEventListener('close', function(event) {
 		console.log("disconnected...");
   });
+	
   socket.addEventListener('error', function(event) {
 		console.log("an error has occured!");
   });
-  socket.addEventListener('message', function (event) 
-  {
+	
+  socket.addEventListener('message', function (event) {
 		const data = event.data;
 		const type = parseInt(data[0]);
 		const msg = data.split(":")[1];
@@ -113,16 +116,19 @@
 		chat.scrollTop = chat.scrollHeight;
 	}
 	
-  });
+});
+	
   send.addEventListener("click", () => {
 		sendthemessage();
-  });
+});
+	
 document.getElementById("msg").addEventListener("keydown", function(e) {
 if (e.keyCode == 13) 
 	{ 
 		sendthemessage();
 	}
 }, false);
+	
 function sendthemessage(){
 		const txt = msg.value;
 		socket.send(MSG_MESSAGE + ":" + txt);
@@ -133,6 +139,7 @@ function sendthemessage(){
 		}
 		msg.value = "";
 };
+	
 function addusername(nickname){
 		const ul2 = document.getElementById("username");
 		const li2 = document.createElement("li");
@@ -141,6 +148,7 @@ function addusername(nickname){
 		li2.innerHTML = nickname;
 		ul2.appendChild(li2);
 }
+	
 function removeusername(nickname) {
 	const ul2 = document.getElementById("username");
 	for (let ii = 0; ii < ul2.children.length; ++ii) {
@@ -150,6 +158,7 @@ function removeusername(nickname) {
 		}
 	};
 }
+	
 function addmessage(msg){
 	const ul = document.getElementById("chatmessage");
 	const li = document.createElement("li");
@@ -158,4 +167,5 @@ function addmessage(msg){
 	li.insertAdjacentHTML("beforeend", msg);
 	ul.appendChild(li)
 }
+	
 </script>
