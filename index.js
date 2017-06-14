@@ -92,17 +92,17 @@ let validUsername = (str) => {
   );
 };
 
-wss.on('connection', function connection(ws) {
+wss.on('connection', function connection(ws, req) {
 	console.log("someone connected");
-	const ip = "roflcopter"; //ws.upgradeReq.connection.remoteAddress;
+	const ip = req.headers['x-forwarded-for'] || ws.upgradeReq.connection.remoteAddress;
 	const user = new User({
 	ip: ip,
 	socket: ws
 	});	
-  /*if (userAlreadyConnected(user)) {
+  if (userAlreadyConnected(user)) {
     console.log("Already connected, skipping!");
     return;
-  }*/
+  }
 	users.push(user);
 	console.log(users.length, "connected users!");
 	ws.on('close', () => {
