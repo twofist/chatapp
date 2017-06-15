@@ -1,7 +1,7 @@
 # chatbox
 Simple chatbox
 
-## You can try it online at http://twofist.info
+## You can try it online here https://twofist.github.io/chatbox/ or http://twofist.info
 
 send / receive messages  
 pming specified online user  
