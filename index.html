@@ -63,6 +63,13 @@
 	const MSG_MESSAGE = 6;
 	const MSG_EVIL = 7;
 	
+    //reconnect feature 10/10
+  window.onfocus = function(){
+      if(socket.readyState === socket.CLOSED && window.location.search.split("=")[1] === username){
+                location.reload();
+      }
+  }
+  
   socket.addEventListener('open', function (event) {
 		socket.send(MSG_USERNAME + ":" + username);
   });
