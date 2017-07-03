@@ -17,16 +17,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/twofist/chatbox.git"
+    "url": "git+https://github.com/twofist/chatapp.git"
   },
   "keywords": [
     "heroku",
-    "chatbox"
+    "chatapp"
   ],
   "author": "twofist && maierfelix",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/twofist/chatbox/issues"
+    "url": "https://github.com/twofist/chatapp/issues"
   },
-  "homepage": "https://github.com/twofist/chatbox#readme"
+  "homepage": "https://github.com/twofist/chatapp#readme"
 }
