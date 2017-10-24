@@ -1,7 +1,7 @@
 # chatapp
 Simple chatapp
 
-## You can try it online here https://twofist.github.io/chatapp/ or http://twofist.info
+## You can try it online here https://twofist.github.io/chatapp/
 
 send / receive messages  
 pming specified online user  
